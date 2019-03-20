@@ -1,11 +1,12 @@
 {
-  "name": "greeter-bot",
+  "name": "dice-bot",
   "version": "1.0.0",
-  "description": "My own Discord bot",
+  "description": "Dice roll bot",
   "main": "bot.js",
-  "author": "YOUR-NAME-HERE",
+  "author": "Antohny Castro",
   "dependencies": {
     "discord.io": "github:woor/discord.io#gateway_v6",
+    "random-cat": "^1.0.1",
     "roll": "^1.2.0",
     "winston": "^3.2.1"
   }

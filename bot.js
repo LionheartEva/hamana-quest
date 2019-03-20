@@ -2,6 +2,8 @@ var Discord = require('discord.io');
 var logger = require('winston');
 var auth = require('./auth.json');
 var Roll = require('roll');
+var randomCat = require('random-cat');
+
 // Configure logger settings
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
@@ -9,8 +11,6 @@ logger.add(new logger.transports.Console, {
 });
 logger.level = 'debug';
 // Initialize Discord Bot
-
-console.log(auth.token);
 
 var bot = new Discord.Client({
     token: auth.token,
@@ -32,7 +32,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 
         args = args.splice(1);
 
-        console.log(args[0]);
+
 
         switch(cmd) {
             // !ping
@@ -42,17 +42,52 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     message: 'Hola putito!'
                 });
                 break;
+
+            case 'Maria':
+
+                var jauriaQuotes = ['Hamana', 'Heniwor', 'Mi-pecho-contra-tu-espalda', 'Son-malas', 'Boguel'];
+
+                var urlWithAllOptions = randomCat.get({
+                    dummyText: jauriaQuotes[Math.floor(Math.random() * jauriaQuotes.length)],
+                    gray: true
+                });
+
+                console.log('maria', urlWithAllOptions);
+
+                bot.sendMessage({
+                    to: channelID,
+                    message: urlWithAllOptions
+                });
+                break;
+
             case 'roll':
 
                 roll = new Roll();
 
                 var dice = roll.roll(args[0]);
 
-                console.log(dice);
+                var rolledArray = dice.rolled;
+                var calculationsArray = dice.calculations;
+
+                var input = '**Lanzado: **' + args[0];
+                var lanzamientos = '**Lanzamientos**: ';
+                var calculos = '**Calculos**: ';
+
+                for (var i = 0; i < rolledArray.length; i+=1) {
+                    lanzamientos += '(' + rolledArray[i] + ') ';
+                }
+
+                for (var i = 0; i < calculationsArray.length; i+=1) {
+                    calculos += calculationsArray[i] + ' <- ';
+                }
+
+                calculos += '0';
+
+                var reesult = input + "\n" + lanzamientos + "\n" + calculos + "\n" + "**Total**: " + dice.result;
 
                 bot.sendMessage({
                     to: channelID,
-                    message: dice.result
+                    message: reesult
                 });
                 break;
 
